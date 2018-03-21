@@ -4,7 +4,7 @@ from ..models import User
 from ..email import send_email
 from . import main
 from .forms import NameForm
-
+from .contents import filelist
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -25,3 +25,9 @@ def index():
     return render_template('index.html',
                            form=form, name=session.get('name'),
                            known=session.get('known', False))
+
+@main.route('/list',methods=['GET'])
+def list():
+    thelist=str("wow")
+
+    return render_template('list.html', files=filelist.files, thelist=thelist)
