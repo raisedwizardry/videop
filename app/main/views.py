@@ -29,5 +29,5 @@ def index():
 @main.route('/list',methods=['GET'])
 def list():
     thelist=str("wow")
-
-    return render_template('list.html', files=filelist.files, thelist=thelist)
+    files=filelist.showrecord(object)
+    return render_template('list.html', files=files, thelist=thelist)
