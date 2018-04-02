@@ -2,6 +2,7 @@ import os
 import sys
 import re
 from plexapi.server import PlexServer
+from config import Config
 
 class show:
 	
@@ -21,9 +22,7 @@ class show:
 				self.title= re.sub('\s[(]\d\d\d\d[)]\s-','',str(titled))
 
 	def match(self):
-		baseurl = 'http://mordor:32400'
-		token = '357ny2ronBoJNay5iHPh'
-		plex = PlexServer(baseurl, token)
+		plex = PlexServer(str(Config.PLEX_URL), str(Config.PLEX_TOKEN))
 		for video in plex.search(self.title):
 			#add logic to check for multiple search results
 			if video.TYPE=='show':
