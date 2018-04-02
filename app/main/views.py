@@ -1,10 +1,13 @@
+import os
+import subprocess
+import sys
 from flask import render_template, session, redirect, url_for, current_app
 from .. import db
 from ..models import User
 from ..email import send_email
 from . import main
 from .forms import NameForm
-from .contents import filelist
+from .contents import show
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -27,7 +30,14 @@ def index():
                            known=session.get('known', False))
 
 @main.route('/list',methods=['GET'])
-def list():
-    thelist=str("wow")
-    files=filelist.showrecord(object)
-    return render_template('list.html', files=files, thelist=thelist)
+def listfiles():
+    files=list()
+    for root, directories, filenames in os.walk(str("/mnt/d/Stuff/videop-dev-folder/Video/DVR/processing/plex-recordings")):
+        directories[:] = [d for d in directories if not d.startswith('.')]
+        for filename in filenames:
+            if filename.lower().endswith('.ts'):
+                fill=show(root, filename)
+                show.match(fill)
+                files.append(str(fill.newfilename))
+
+    return render_template('list.html', files=files)
