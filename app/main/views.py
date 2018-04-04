@@ -1,9 +1,10 @@
 import os
 import subprocess
 import sys
+import ntpath
 from flask import render_template, session, redirect, url_for, current_app
 from .. import db
-from ..models import User
+from ..models import Listed
 from ..email import send_email
 from . import main
 from .forms import NameForm
@@ -29,7 +30,7 @@ def index():
                            form=form, name=session.get('name'),
                            known=session.get('known', False))
 
-@main.route('/list',methods=['GET'])
+@main.route('/list',methods=['GET','POST'])
 def listfiles():
     files=list()
     for root, directories, filenames in os.walk(str("/mnt/d/Stuff/videop-dev-folder/Video/DVR/processing/plex-recordings")):
@@ -38,6 +39,16 @@ def listfiles():
             if filename.lower().endswith('.ts'):
                 fill=show(root, filename)
                 show.match(fill)
-                files.append(str(fill.newfilename))
+                if fill.filename == os.path.basename(fill.plexdirfilename[0]):
+                    #writedb=Listed( directory=fill.directory, dirfilename=fill.dirfilename, 
+                    #                filename=fill.filename, filenamenoext=fill.filenamenoext,
+                    #                epnum=fill.epnum, epseason=fill.epseason, 
+                    #                epshow=fill.epshow, epname=fill.epname)
+                    #db.session.add(writedb)
+                    #db.session.commit()
+                files.append(str(fill.epname))
+
 
     return render_template('list.html', files=files)
+#/srv/samba/E10TB/Video/DVR/processing/plex-recording/tv-shows/A.P. BIO/Season 01/A.P. Bio (2018) - S01E05 - Dating Toledoans.ts
+#/mnt/d/Stuff/videop-dev-folder/Video/DVR/processing/plex-recordings/tv-shows/A.P. BIO/Season 01/A.P. Bio (2018) - S01E05 - Dating Toledoans.ts
