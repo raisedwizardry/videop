@@ -4,5 +4,6 @@ from wtforms.validators import DataRequired
 
 
 class NameForm(FlaskForm):
-    name = StringField('What is your name?', validators=[DataRequired()])
+    directory = StringField('Where is your Plex DVR directory?', validators=[DataRequired()])
+    time = StringField('What time do you want to Process?', validators=[DataRequired()])
     submit = SubmitField('Submit')

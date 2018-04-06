@@ -4,7 +4,7 @@ import sys
 import ntpath
 from flask import render_template, session, redirect, url_for, current_app
 from .. import db
-from ..models import Listed
+from ..models import Listed,Userconfig
 from ..email import send_email
 from . import main
 from .forms import NameForm
@@ -16,12 +16,8 @@ def index():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.name.data).first()
         if user is None:
-            user = User(username=form.name.data)
+            user = User(username=form.directory.data)
             db.session.add(user)
-            session['known'] = False
-            if current_app.config['FLASKY_ADMIN']:
-                send_email(current_app.config['FLASKY_ADMIN'], 'New User',
-                           'mail/new_user', user=user)
         else:
             session['known'] = True
         session['name'] = form.name.data
@@ -39,13 +35,9 @@ def listfiles():
             if filename.lower().endswith('.ts'):
                 fill=show(root, filename)
                 show.match(fill)
-                if fill.filename == os.path.basename(fill.plexdirfilename[0]):
-                    #writedb=Listed( directory=fill.directory, dirfilename=fill.dirfilename, 
-                    #                filename=fill.filename, filenamenoext=fill.filenamenoext,
-                    #                epnum=fill.epnum, epseason=fill.epseason, 
-                    #                epshow=fill.epshow, epname=fill.epname)
-                    #db.session.add(writedb)
-                    #db.session.commit()
+                dircheck = Listed.query.filter_by(dirfilename=fill.dirfilename).first()
+                if dircheck is None:
+                    show.commit(fill)
                 files.append(str(fill.epname))
 
 

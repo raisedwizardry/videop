@@ -1,7 +1,8 @@
 import os
 from flask_migrate import Migrate
 from app import create_app, db
-from app.models import Listed
+from app.models import Listed, Userconfig
+
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
@@ -9,7 +10,7 @@ migrate = Migrate(app, db)
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, Listed=Listed)
+    return dict(db=db, Listed=Listed, Userconfig=Userconfig)
 
 
 @app.cli.command()
