@@ -3,7 +3,6 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 
 
-class NameForm(FlaskForm):
+class PlexForm(FlaskForm):
     directory = StringField('Where is your Plex DVR directory?', validators=[DataRequired()])
-    time = StringField('What time do you want to Process?', validators=[DataRequired()])
     submit = SubmitField('Submit')

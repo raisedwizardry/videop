@@ -5,11 +5,11 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Hello, {% if name %}{{ name }}{% else %}Stranger{% endif %}!</h1>
-    {% if not known %}
-    <p>Pleased to meet you!</p>
+    <h1>Welcome to videop</h1>
+    {% if directory is none %}
+    <p>you have not entered a Plex DVR Directory</p>
     {% else %}
-    <p>Happy to see you again!</p>
+    <p>The current Plex DVR Directory is: {{ directory.plexdir }}</p>
     {% endif %}
 </div>
 {{ wtf.quick_form(form) }}
