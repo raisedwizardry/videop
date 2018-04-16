@@ -24,7 +24,9 @@ def index():
 							form=form, 
 							directory=directory)
 
-#/mnt/d/Stuff/videop-dev-folder/Video/DVR/processing/plex-recordings
+#/mnt/d/Stuff/videop-dev-folder/Video/DVR/processing/plex-dvr/recordings/tv-shows/
+#/mnt/d/Stuff/videop-dev-folder/Video/DVR/processing/plex-dvr/recordings/movies/
+#/mnt/d/Stuff/videop-dev-folder/Video/DVR/processing/plex-dvr/archived/
 @main.route('/list', methods=['GET','POST'])
 def listfiles():
 	files=list()

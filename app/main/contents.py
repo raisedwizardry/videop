@@ -41,8 +41,6 @@ class show:
 					if self.filename == os.path.basename(plexdirfilename): #if str(plexdirfilename) == str(self.dirfilename)
 						self.epname = '%s.%s.%s' % (lama.show().title, lama.seasonEpisode, lama.title)
 				
-				
-	
 	def commit(self):
 		writedb=Listed( directory=self.directory, dirfilename=self.dirfilename, 
 						filename=self.filename, filenamenoext=self.filenamenoext,
@@ -55,7 +53,6 @@ class show:
 		plex = PlexServer(str(Config.PLEX_URL), str(Config.PLEX_TOKEN))
 		playing= plex.isPlayingMedia(includePaused=True)
 		
-
 	def retrieve(self, dirfilename):
 		entry=Listed.query.filter_by(dirfilename=str(dirfilename)).first()
 		if entry:
@@ -67,7 +64,14 @@ class show:
 			self.epseason = entry.epseason
 			self.epshow = entry.epshow
 			self.epname = entry.epname
+	
+	def setarchive(self, archivedir):
+		today= arrow.utcnow().format('YYYYMMDD HHmmss')
+		self.archivedir = str(archivedir) + str(today) + " " + str(self.epname) + "/"
+		self.archivedirfilename= str(self.archivedir) + str(self.epname)
+		self.episode= str(fill.archivedirfilename)+".ts"
 		
+
 		#create a working directory
 		#create a log file
 		#move target file into directory
