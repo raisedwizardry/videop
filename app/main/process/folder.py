@@ -15,10 +15,7 @@ def houseKeep():
 
 def createSrt():
 	subprocess.call(["/opt/ccextractor/linux/ccextractor",
-		str(fill.archivedir)+str(fill.filename)]) #runccextractor on copied file in mux dir
-	subprocess.call(["mv", 
-		str(fill.archivedir)+str(fill.filenamenoext)+".srt", 
-		str(fill.archivedirfilename)+".srt"])
+		str(fill.archivedir)+str(fill.filename), "-o", str(fill.archivedirfilename)+".srt"]) #runccextractor on copied file in mux dir
 	subprocess.call(["rm", str(fill.archivedir)+str(fill.filename)]) #remove extracted copy file from the mux dir
 	subprocess.call(["mv", str(fill.dirfilename), str(fill.episode)])
 
@@ -28,11 +25,11 @@ def demuxVideo():
 		"-demux", str(fill.episode),
 		"-id", str(theids),
 		"-out", str(fill.archivedir),
-		"-name", str(fill.epname)])
+		"-name", str(fill.epname)+"."])
 
 def createChapter():
-	duration=getDuration(fill.dirfilename)
-	createChap(duration, fill.episode, fill.dirfilename)
+	duration=getDuration(fill.episode)
+	createChap(duration, fill.archivedirfilename)
 
 def muxVideo():
 	fps=getFrame(str(fill.episode))
@@ -60,7 +57,7 @@ def getFrame(filename):
 		str(filename)])
 	return str(out.decode("utf-8").split('\n')[0])
 
-def getDuration(self, filename):
+def getDuration(filename):
 	duration=check_output(["mediainfo", "--Inform=General;%Duration/String3%\\n", str(filename)])
 	duration=duration.decode("utf-8").strip('\n').split('\n')
 	return duration[0]

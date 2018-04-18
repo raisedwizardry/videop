@@ -4,9 +4,9 @@ import datetime
 
 class createChap:
 
-	def __init__(self, duration, episode):
+	def __init__(self, duration, archivedirfilename):
 		chaplist= self.getChaptimes(duration)
-		chapfile=open(str(episode)+".txt", 'w')
+		chapfile=open(str(archivedirfilename)+".txt", 'w')
 		chapfile.write('CHAPTER01=00:00:00.00\n')
 		chapfile.write('CHAPTER01NAME=Chapter 1\n')
 		for i in range (0, len(chaplist), 1):
