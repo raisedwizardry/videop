@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import sys
 import os.path
 import subprocess
@@ -7,20 +5,22 @@ import xml.dom
 import datetime
 import re
 from subprocess import check_output
+from .contents import createChap
 
 def houseKeep():
 	subprocess.call(["mkdir", str(fill.archivedir)])
-	if os.path.isfile(str(fill.archivedir)+fill.filename) is False:
-		subprocess.call(["cp",
-			str(fill.dirfilename),
-			str(fill.archivedir)]) #copy original file to mux dir
+	subprocess.call(["cp",
+		str(fill.dirfilename),
+		str(fill.archivedir)]) #copy original file to mux dir
 
 def createSrt():
 	subprocess.call(["/opt/ccextractor/linux/ccextractor",
-		str(fill.dirfilename),
-		"-o", str(fill.epname)]) #runccextractor on copied file in mux dir
-	subprocess.call(["rm", str(fill.archivedirfilename)+".ts"]) #remove extracted copy file from the mux dir
-	subprocess.call(["mv", str(fill.dirfilename), str(fill.archivedir)])
+		str(fill.archivedir)+str(fill.filename)]) #runccextractor on copied file in mux dir
+	subprocess.call(["mv", 
+		str(fill.archivedir)+str(fill.filenamenoext)+".srt", 
+		str(fill.archivedirfilename)+".srt"])
+	subprocess.call(["rm", str(fill.archivedir)+str(fill.filename)]) #remove extracted copy file from the mux dir
+	subprocess.call(["mv", str(fill.dirfilename), str(fill.episode)])
 
 def demuxVideo():
 	theids=getId(fill.episode)
@@ -30,15 +30,21 @@ def demuxVideo():
 		"-out", str(fill.archivedir),
 		"-name", str(fill.epname)])
 
+def createChapter():
+	duration=getDuration(fill.dirfilename)
+	createChap(duration, fill.episode, fill.dirfilename)
+
 def muxVideo():
 	fps=getFrame(str(fill.episode))
 	mkvfps="0:"+str(fps)+"fps"
 	subprocess.call(["mkvmerge",
 		"-o", str(fill.archivedirfilename)+"-notrans.mkv", 
 		"--default-duration",
-		str(mkvfps),
+		str(mkvfps), "--chapters",
+		str(fill.archivedirfilename)+".txt",
 		str(fill.archivedirfilename)+".m2v",
-		str(fill.archivedirfilename)+".ac3"])
+		str(fill.archivedirfilename)+".ac3",
+		str(fill.archivedirfilename)+".srt"])
 
 def getId(filename):
 	vid=check_output(["mediainfo", "--Inform=Video;%ID%\\n", str(filename)])
@@ -54,3 +60,7 @@ def getFrame(filename):
 		str(filename)])
 	return str(out.decode("utf-8").split('\n')[0])
 
+def getDuration(self, filename):
+	duration=check_output(["mediainfo", "--Inform=General;%Duration/String3%\\n", str(filename)])
+	duration=duration.decode("utf-8").strip('\n').split('\n')
+	return duration[0]

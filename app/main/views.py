@@ -12,7 +12,7 @@ from .contents import show
 @main.route('/', methods=['GET', 'POST'])
 def index():
 	form = PlexForm()
-	directory = Userconfig.query.get(1)
+	directory = Userconfig.query.get(2)
 
 	if form.validate_on_submit():
 		#add check for input already in database and everwrite it if there. maybe this #concheck = Userconfig.query.filter_by(plexdir=form.directory.data).first()
@@ -30,7 +30,7 @@ def index():
 @main.route('/list', methods=['GET','POST'])
 def listfiles():
 	files=list()
-	directory = Userconfig.query.get(1)
+	directory = Userconfig.query.get(2)
 	if directory is None:
 		pass
 	else:
@@ -39,7 +39,6 @@ def listfiles():
 			for filename in filenames:
 				if filename.lower().endswith('.ts'):
 					fill=show(root, filename)
-					show.match(fill)
 					dircheck = Listed.query.filter_by(dirfilename=fill.dirfilename).first()
 					if dircheck is None:
 						show.commit(fill)

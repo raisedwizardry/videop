@@ -23,7 +23,8 @@ class show:
 				titled=" ".join(split[:i])
 				self.epshow= re.sub('\s[(]\d\d\d\d[)]\s-','',str(titled))
 
-	def match(self):
+	@property
+	def epname(self):
 		plex = PlexServer(str(Config.PLEX_URL), str(Config.PLEX_TOKEN))
 		for video in plex.search(self.epshow):
 			#add logic to check for multiple search results
@@ -39,7 +40,7 @@ class show:
 				if len(plexdirfilename)>0:
 					plexdirfilename=lama.locations[0]
 					if self.filename == os.path.basename(plexdirfilename): #if str(plexdirfilename) == str(self.dirfilename)
-						self.epname = '%s.%s.%s' % (lama.show().title, lama.seasonEpisode, lama.title)
+						return '%s %s %s' % (lama.show().title, lama.seasonEpisode, lama.title)
 				
 	def commit(self):
 		writedb=Listed( directory=self.directory, dirfilename=self.dirfilename, 
