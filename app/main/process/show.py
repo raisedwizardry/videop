@@ -1,12 +1,13 @@
 import os
 import sys
 import re
+import arrow
 from plexapi.server import PlexServer
 from config import Config
-from ..models import Listed
-from .. import db
+from ...models import Listed
+from ... import db
 
-class show:
+class show:	
 	
 	def __init__(self, directory, filename):
 		self.directory=directory
@@ -70,7 +71,7 @@ class show:
 		today= arrow.utcnow().format('YYYYMMDD HHmmss')
 		self.archivedir = str(archivedir) + str(today) + " " + str(self.epname) + "/"
 		self.archivedirfilename= str(self.archivedir) + str(self.epname)
-		self.episode= str(fill.archivedirfilename)+".ts"
+		self.episode= str(self.archivedirfilename)+".ts"
 		
 
 		#create a working directory

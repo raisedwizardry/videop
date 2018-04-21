@@ -3,7 +3,7 @@ from . import db
 class Userconfig(db.Model):
 	__tablename__ = 'configs'
 	id = db.Column(db.Integer, primary_key=True)
-	plexdir = db.Column(db.String(64), unique=True)
+	plexdir = db.Column(db.String(64))
 	archivedir = db.Column(db.String(64))
 	time = db.Column(db.Time())
 

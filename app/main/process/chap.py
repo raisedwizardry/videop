@@ -2,7 +2,7 @@ import xml.dom
 import datetime
 
 
-class createChap:
+class chap:
 
 	def __init__(self, duration, archivedirfilename):
 		chaplist= self.getChaptimes(duration)
@@ -53,8 +53,3 @@ class createChap:
 			chaplist.append(chapter)
 			count=count+mark
 		return chaplist
-
-
-
-createChap("/mnt/d/Stuff/videop-dev-folder/Video/DVR/processing/plex-dvr/archived/20180415 212908 A.P. BIO s01e05 Dating Toledoans/A.P. BIO s01e05 Dating Toledoans.ts","A.P. BIO s01e05 Dating Toledoans","/mnt/d/Stuff/videop-dev-folder/Video/DVR/processing/plex-dvr/archived/20180415 212908 A.P. BIO s01e05 Dating Toledoans/")
-print("till")
