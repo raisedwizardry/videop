@@ -10,48 +10,47 @@ from .chap import chap
 class remux:
 	
 	def __init__(self, prop):
-		prop=prop
 		self.houseKeep(prop)
-		#self.createSrt()
-		#self.demuxVideo()
-		#self.createChap()
-		#self.muxVideo()
+		#self.createSrt(prop)
+		#self.demuxVideo(prop)
+		#self.createChap(prop)
+		#self.muxVideo(prop)
 		
-	def houseKeep(self,prop):
+	def houseKeep(self, prop):
 		subprocess.call(["mkdir", str(prop.archivedir)])
-		subprocess.call(["cp",
-			str(prop.dirfilename),
-			str(prop.archivedir)]) #copy original file to mux dir
+		#subprocess.call(["cp",
+		#	str(prop.dirfilename),
+		#	str(prop.archivedir)]) #copy original file to mux dir
 
-	def createSrt(self):
+	def createSrt(self, prop):
 		subprocess.call(["/opt/ccextractor/linux/ccextractor",
-			str(fill.archivedir)+str(fill.filename), "-o", str(fill.archivedirfilename)+".srt"]) #runccextractor on copied file in mux dir
-		subprocess.call(["rm", str(fill.archivedir)+str(fill.filename)]) #remove extracted copy file from the mux dir
-		subprocess.call(["mv", str(fill.dirfilename), str(fill.episode)])
+			str(prop.archivedir)+str(prop.filename), "-o", str(prop.archivedirfilename)+".srt"]) #runccextractor on copied file in mux dir
+		subprocess.call(["rm", str(prop.archivedir)+str(prop.filename)]) #remove extracted copy file from the mux dir
+		subprocess.call(["mv", str(prop.dirfilename), str(prop.episode)])
 
-	def demuxVideo(self):
-		theids=self.getId(fill.episode)
+	def demuxVideo(self, prop):
+		theids=self.getId(prop.episode)
 		subprocess.call(["projectx", 
-			"-demux", str(fill.episode),
+			"-demux", str(prop.episode),
 			"-id", str(theids),
-			"-out", str(fill.archivedir),
-			"-name", str(fill.epname)+"."])
+			"-out", str(prop.archivedir),
+			"-name", str(prop.epname)+"."])
 
-	def createChapter(self):
-		duration=self.getDuration(fill.episode)
-		chap(duration, fill.archivedirfilename)
+	def createChapter(self, prop):
+		duration=self.getDuration(prop.episode)
+		chap(duration, prop.archivedirfilename)
 
-	def muxVideo(self):
-		fps=self.getFrame(str(fill.episode))
+	def muxVideo(self, prop):
+		fps=self.getFrame(str(prop.episode))
 		mkvfps="0:"+str(fps)+"fps"
 		subprocess.call(["mkvmerge",
-			"-o", str(fill.archivedirfilename)+"-notrans.mkv", 
+			"-o", str(prop.archivedirfilename)+"-notrans.mkv", 
 			"--default-duration",
 			str(mkvfps), "--chapters",
-			str(fill.archivedirfilename)+".txt",
-			str(fill.archivedirfilename)+".m2v",
-			str(fill.archivedirfilename)+".ac3",
-			str(fill.archivedirfilename)+".srt"])
+			str(prop.archivedirfilename)+".txt",
+			str(prop.archivedirfilename)+".m2v",
+			str(prop.archivedirfilename)+".ac3",
+			str(prop.archivedirfilename)+".srt"])
 
 	def getId(self, filename):
 		vid=check_output(["mediainfo", "--Inform=Video;%ID%\\n", str(filename)])
