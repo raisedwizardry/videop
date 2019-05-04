@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restplus import Api, Resource, fields
-from environment.instance import environment_config
+from server.environment import environment_config
 
 
 class Server(object):

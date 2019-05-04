@@ -12,7 +12,7 @@ episode_db = [
     {"episodesign": "S01E12", "title": "Robin in the Hood", "show": "Bob's Burgers"},
 ]
 
-@api.route('/episodes')
+@api.route('/api/episodes')
 class EpisodeList(Resource):
     @api.marshal_list_with(episode)
     def get(self):
