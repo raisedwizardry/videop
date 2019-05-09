@@ -4,10 +4,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pytest = "*"
 
 [packages]
 flask = "*"
 flask-restplus = "*"
+pytest = "*"
+pytest-flask = "*"
 
 [scripts]
 startup = "python ./src/main.py"
