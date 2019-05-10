@@ -11,6 +11,7 @@ flask = "*"
 flask-restplus = "*"
 pytest = "*"
 pytest-flask = "*"
+configparser = "*"
 
 [scripts]
 startup = "python ./src/main.py"

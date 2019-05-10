@@ -44,3 +44,6 @@ venv
 
 #vs code
 .vscode
+
+#settings
+settings.ini
