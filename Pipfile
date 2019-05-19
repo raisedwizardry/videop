@@ -12,6 +12,7 @@ flask-restplus = "*"
 pytest = "*"
 pytest-flask = "*"
 configparser = "*"
+plexapi = "*"
 
 [scripts]
 startup = "python ./src/main.py"
