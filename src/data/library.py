@@ -12,7 +12,6 @@ class Match:
         file = Filename(path)
         if file.isMovie:
             shows = server.library.section('Movies')
-
         else:
             shows = server.library.section('TV Shows')
             showInfo = shows.get(file.show)

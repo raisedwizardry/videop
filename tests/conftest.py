@@ -7,3 +7,4 @@ from server.instance import server
 def app():
     app = server.app
     return app
+
