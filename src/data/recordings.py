@@ -1,20 +1,17 @@
 import re
-import os
-from pathlib import PurePath
-import fnmatch
-from server.environment import video_file_path
+from pathlib import Path, PurePath
 
 class DirectoryFiles:
-    def __init__(self):
+    def __init__(self, path):
+        self.videoPath = path
         self.files = list()
-        self.pattern = "*.ts"
+        self.pattern = '**/*.ts'
         self.listAll()
 
     def listAll(self):
-        for root, directories, filenames in os.walk(video_file_path):
-            for filename in fnmatch.filter(filenames, self.pattern):
-                join = PurePath(root) / filename
-                self.files.append(join.as_posix())
+        videoDirectory = Path(self.videoPath)
+        for videoFiles in videoDirectory.glob(self.pattern):
+            self.files.append(videoFiles.as_posix())
 
 #TODO:make Filename an abstract base class to accomidate an episode and movie class they can inherit from
 class Filename:
