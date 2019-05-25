@@ -1,6 +1,10 @@
 import re
 from pathlib import Path, PurePath
 
+class File():
+    def __init__(self, file):
+        self.file = file
+
 class DirectoryFiles:
     def __init__(self, path):
         self.videoPath = path
@@ -11,7 +15,7 @@ class DirectoryFiles:
     def listAll(self):
         videoDirectory = Path(self.videoPath)
         for videoFiles in videoDirectory.glob(self.pattern):
-            self.files.append(videoFiles.as_posix())
+            self.files.append(File(videoFiles.as_posix()))
 
 #TODO:make Filename an abstract base class to accomidate an episode and movie class they can inherit from
 class Filename:
