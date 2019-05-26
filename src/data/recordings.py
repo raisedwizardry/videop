@@ -21,15 +21,16 @@ class DirectoryFiles:
 class Filename:
     def __init__(self, fullDirectoryFilename):
         self.full = fullDirectoryFilename
-        split = Directory(fullDirectoryFilename)
-        self.fullFilename = split.filename
-        self.fullPath = split.directory
-        self.extention = split.extention
+        pathparts = Directory(fullDirectoryFilename)
+        self.fullFilename = pathparts.filename
+        self.fullPath = pathparts.directory
+        self.simpleFilename = pathparts.simplename
+        self.extention = pathparts.extention
         self.isMovie = None
-        seFind = self.matchSe(self.fullFilename)
+        seFind = self.matchSe(self.simpleFilename)
         if seFind:
             self.setEpisode(seFind)
-        movieYearFind = self.matchYear(self.fullFilename)
+        movieYearFind = self.matchYear(self.simpleFilename)
         if movieYearFind and self.isMovie is not False:
             self.setMovie(movieYearFind)
 
@@ -52,8 +53,8 @@ class Filename:
         self.seInfo = seFind.group()
         self.seasonNumber = int(seFind.group(1))
         self.episodeNumber = int(seFind.group(3))
-        self.title = self.fullFilename.split('.', 1)[-2].split(' - ')[2]
-        self.show = self.excludeYear(self.fullFilename)
+        self.title = self.simpleFilename.split(' - ')[2]
+        self.show = self.excludeYear(self.simpleFilename)
         self.isMovie = False
 
     def setMovie(self, movieYearFind):
@@ -67,4 +68,5 @@ class Directory:
         self.full = path.as_posix()
         self.directory = path.parent.as_posix()
         self.filename = path.name
-        self.extention = path.suffix
+        self.simplename = PurePath(path.with_suffix("")).name
+        self.extention = path.suffix.split('.', 1)[-1]
